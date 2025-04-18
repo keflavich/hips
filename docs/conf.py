@@ -50,6 +50,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx_automodapi.automodapi',
     'sphinx_automodapi.smart_resolver',
+    'matplotlib.sphinxext.plot_directive',
 ]
 
 # Intersphinx mappings
