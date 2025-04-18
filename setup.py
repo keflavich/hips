@@ -5,7 +5,6 @@ import glob
 import os
 import sys
 from setuptools import setup, find_packages, Command
-import subprocess
 
 # Get some values from the setup.cfg
 from configparser import ConfigParser
@@ -23,26 +22,6 @@ URL = metadata['url']
 
 with open('LONG_DESCRIPTION.rst') as f:
     LONG_DESCRIPTION = f.read()
-
-# VERSION should be PEP440 compatible (http://www.python.org/dev/peps/pep-0440)
-VERSION = metadata.get('version')
-
-# Indicates if this version is a release version
-RELEASE = 'dev' not in VERSION
-
-if not RELEASE:
-    try:
-        import re
-        git_description = subprocess.check_output(['git', 'describe', '--tags']).decode('utf-8').strip()
-        tags = subprocess.check_output(['git', 'tag']).decode('utf-8').strip().split('\n')
-        for tag in tags:
-            git_description = git_description.replace(tag, '')
-        git_description = re.sub('^v', '', git_description)
-        git_description = re.sub('-([0-9]+)-', '.dev\\1+', git_description)
-        git_description = re.sub('-g([0-9a-zA-Z]+)', '+\\1', git_description)
-        VERSION += git_description
-    except (subprocess.CalledProcessError, OSError):
-        pass
 
 # Custom commands to provide helpful messages to users
 class TestCommand(Command):
@@ -168,7 +147,6 @@ classifiers = [
 
 setup(
     name=PACKAGENAME,
-    version=VERSION,
     description=DESCRIPTION,
     scripts=scripts,
     install_requires=install_requires,
@@ -185,4 +163,5 @@ setup(
     use_2to3=False,
     entry_points=entry_points,
     cmdclass=cmdclassd,
+    use_scm_version=True,
 )
