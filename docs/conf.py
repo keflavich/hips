@@ -29,18 +29,6 @@ import datetime
 import os
 import sys
 
-try:
-    import astropy_helpers
-except ImportError:
-    # Building from inside the docs/ directory?
-    if os.path.basename(os.getcwd()) == 'docs':
-        a_h_path = os.path.abspath(os.path.join('..', 'astropy_helpers'))
-        if os.path.isdir(a_h_path):
-            sys.path.insert(1, a_h_path)
-
-# Load all of the global Astropy configuration
-from astropy_helpers.sphinx.conf import *
-
 # Get configuration information from setup.cfg
 from configparser import ConfigParser
 conf = ConfigParser()
@@ -50,28 +38,47 @@ setup_cfg = dict(conf.items('metadata'))
 
 # -- General configuration ----------------------------------------------------
 
+# Add any Sphinx extension module names here, as strings
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.todo',
+    'sphinx.ext.coverage',
+    'sphinx.ext.inheritance_diagram',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.napoleon',
+    'sphinx_automodapi.automodapi',
+    'sphinx_automodapi.smart_resolver',
+]
 
-del intersphinx_mapping['scipy']
-del intersphinx_mapping['h5py']
-intersphinx_mapping['astropy-healpix'] = ('https://astropy-healpix.readthedocs.io/en/latest/', None)
+# Intersphinx mappings
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3/', None),
+    'numpy': ('https://numpy.org/doc/stable/', None),
+    'astropy': ('https://docs.astropy.org/en/stable/', None),
+    'astropy-healpix': ('https://astropy-healpix.readthedocs.io/en/latest/', None),
+}
 
 # By default, highlight as Python 3.
 highlight_language = 'python3'
 
-# If your documentation needs a minimal Sphinx version, state it here.
-#needs_sphinx = '1.2'
+# The suffix of source filenames.
+source_suffix = '.rst'
 
-# To perform a Sphinx version check that needs to be more specific than
-# major.minor, call `check_sphinx_version("x.y.z")` here.
-# check_sphinx_version("1.2.1")
+# The encoding of source files.
+#source_encoding = 'utf-8-sig'
+
+# The master toctree document.
+master_doc = 'index'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns.append('_templates')
+exclude_patterns = ['_build', '_templates']
 
 # This is added to the end of RST files - a good place to put substitutions to
 # be used globally.
-rst_epilog += """
+rst_epilog = """
 """
 
 # -- Project information ------------------------------------------------------
@@ -112,11 +119,7 @@ release = package.__version__
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes. To override the custom theme, set this to the
 # name of a builtin theme or the name of a custom theme in html_theme_path.
-#html_theme = None
-
 html_theme = "sphinx_rtd_theme"
-
-
 
 # Custom sidebar templates, maps document names to template names.
 #html_sidebars = {}
