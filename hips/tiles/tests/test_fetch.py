@@ -1,6 +1,6 @@
 # Licensed under a 3-clause BSD style license - see LICENSE.rst
 import pytest
-from astropy.tests.helper import remote_data
+from ...tests.helper import remote_data
 from numpy.testing import assert_allclose
 from ..fetch import fetch_tiles
 from ..survey import HipsSurveyProperties

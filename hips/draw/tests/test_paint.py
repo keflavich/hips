@@ -2,7 +2,7 @@
 import pytest
 from numpy.testing import assert_allclose
 from astropy.coordinates import SkyCoord
-from astropy.tests.helper import remote_data
+from ...tests.helper import remote_data
 from ...utils.testing import requires_hips_extra
 from ...utils.wcs import WCSGeometry
 from ...tiles import HipsSurveyProperties

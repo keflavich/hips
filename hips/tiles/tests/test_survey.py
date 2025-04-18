@@ -2,7 +2,7 @@
 import pytest
 from numpy.testing import assert_allclose
 from astropy.utils.data import get_pkg_data_filename
-from astropy.tests.helper import remote_data
+from ...tests.helper import remote_data
 from ...utils.testing import get_hips_extra_file, requires_hips_extra
 from ..tile import HipsTileMeta
 from ..survey import HipsSurveyProperties, HipsSurveyPropertiesList

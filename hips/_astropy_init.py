@@ -111,29 +111,34 @@ def test(package=None, test_path=None, args=None, plugins=None,
 if not _ASTROPY_SETUP_:  # noqa
     import os
     from warnings import warn
-    from astropy.config.configuration import (
-        update_default_config,
-        ConfigurationDefaultMissingError,
-        ConfigurationDefaultMissingWarning)
+    
+    # Check if we have a config file and update it if needed
+    # This is compatible with both older and newer astropy versions
+    try:
+        from astropy.config.configuration import update_default_config, ConfigurationDefaultMissingError, ConfigurationDefaultMissingWarning
+        
+        # add these here so we only need to cleanup the namespace at the end
+        config_dir = None
 
-    # add these here so we only need to cleanup the namespace at the end
-    config_dir = None
-
-    if not os.environ.get('ASTROPY_SKIP_CONFIG_UPDATE', False):
-        config_dir = os.path.dirname(__file__)
-        config_template = os.path.join(config_dir, __package__ + ".cfg")
-        if os.path.isfile(config_template):
-            try:
-                update_default_config(
-                    __package__, config_dir, version=__version__)
-            except TypeError as orig_error:
+        if not os.environ.get('ASTROPY_SKIP_CONFIG_UPDATE', False):
+            config_dir = os.path.dirname(__file__)
+            config_template = os.path.join(config_dir, __package__ + ".cfg")
+            if os.path.isfile(config_template):
                 try:
-                    update_default_config(__package__, config_dir)
-                except ConfigurationDefaultMissingError as e:
-                    wmsg = (e.args[0] +
-                            " Cannot install default profile. If you are "
-                            "importing from source, this is expected.")
-                    warn(ConfigurationDefaultMissingWarning(wmsg))
-                    del e
-                except Exception:
-                    raise orig_error
+                    update_default_config(
+                        __package__, config_dir, version=__version__)
+                except TypeError as orig_error:
+                    try:
+                        update_default_config(__package__, config_dir)
+                    except ConfigurationDefaultMissingError as e:
+                        wmsg = (e.args[0] +
+                                " Cannot install default profile. If you are "
+                                "importing from source, this is expected.")
+                        warn(ConfigurationDefaultMissingWarning(wmsg))
+                        del e
+                    except Exception:
+                        raise orig_error
+    except ImportError:
+        # Newer versions of astropy might have a different configuration system
+        # or the update_default_config might be moved elsewhere
+        pass

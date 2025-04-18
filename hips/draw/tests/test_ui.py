@@ -2,7 +2,7 @@
 import pytest
 import numpy as np
 from numpy.testing import assert_allclose
-from astropy.tests.helper import remote_data
+from ...tests.helper import remote_data
 from ...utils.testing import make_test_wcs_geometry
 from ...tiles import HipsSurveyProperties
 from ..ui import make_sky_image

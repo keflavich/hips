@@ -2,7 +2,22 @@
 # by importing them here in conftest.py they are discoverable by py.test
 # no matter how it is invoked within the source tree.
 
-from astropy.tests.pytest_plugins import *
+import os
+import pytest
+try:
+    # For astropy 4.0 and later
+    from pytest_astropy_header.display import PYTEST_HEADER_MODULES, TESTED_VERSIONS
+except ImportError:
+    try:
+        # For astropy 3.0 and later
+        from astropy.tests.plugins.display import PYTEST_HEADER_MODULES, TESTED_VERSIONS
+    except ImportError:
+        # For astropy < 3.0
+        try:
+            from astropy.tests.pytest_plugins import PYTEST_HEADER_MODULES, TESTED_VERSIONS
+        except ImportError:
+            PYTEST_HEADER_MODULES = {}
+            TESTED_VERSIONS = {}
 
 ## Uncomment the following line to treat all DeprecationWarnings as
 ## exceptions
@@ -27,8 +42,6 @@ try:
     from .version import version
 except ImportError:
     version = 'dev'
-
-import os
 
 packagename = os.path.basename(os.path.dirname(__file__))
 TESTED_VERSIONS[packagename] = version

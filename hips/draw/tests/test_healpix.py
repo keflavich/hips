@@ -48,7 +48,7 @@ def test_healpix_to_hips(tmpdir, file_format):
 
     for idx, val in enumerate(desired):
         filename = str(tmpdir / f"Norder1/Dir0/Npix{idx}.{file_format}")
-        if file_format is "fits":
+        if file_format == "fits":
             data = fits.getdata(filename)
             data = np.rot90(data, k=-1)
         else:

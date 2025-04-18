@@ -1,7 +1,7 @@
 # Licensed under a 3-clause BSD style license - see LICENSE.rst
 from pathlib import Path
 import pytest
-from astropy.tests.helper import remote_data
+from ...tests.helper import remote_data
 from numpy.testing import assert_equal, assert_allclose
 from ...utils.testing import get_hips_extra_file, requires_hips_extra
 from ..tile import HipsTileMeta
